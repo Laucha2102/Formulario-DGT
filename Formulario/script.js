@@ -1,7 +1,23 @@
 const submitFunction = (event) => {
-    event.preventDefault(); // Prevenir actualización
-    validarFormulario();
-};
+    event.preventDefault(); // 🚫 evita que se reinicie SIEMPRE
+    if (!validarFormulario()){
+        event.preventDefault();
+    }else{
+        event.preventDefault();
+
+        alert(
+            "Los datos enviados fueron:\n" +
+            "Nombre: " + document.getElementById("nombre").value + "\n" +
+            "Apellido: " + document.getElementById("apellido").value + "\n" +
+            "Documento: " + document.getElementById("documento").value + "\n" +
+            "Email: " + document.getElementById("email").value + "\n" +
+            "Edad: " + document.getElementById("edad").value + "\n" +
+            "Actividad: " + document.getElementById("actividad").value + "\n" +
+            "Nivel de Estudio: " + document.getElementById("nivelEstudio").value
+        );
+    }
+
+}
 
 document.getElementById('formulario').addEventListener('submit', submitFunction);
 
@@ -26,12 +42,64 @@ function validarFormulario() {
     const email= document.getElementById('email');
     let errorEmail = document.getElementById('errorEmail')
 
-    if(/^[^\s@]+@{^\s@}+\.{^\s@}+$/.test(email.value)){
+    if(/^[^\s@]+@{^\s@}+\.{^\s@}+$/.test(email.value)){ //Este regex valida que el email sea valido
         ocultarError(errorEmail)
     }else{
         mostrarError(errorEmail, 'Ingrese un correo electronico valido!')
     }
 
+    // Validacion de edad
+
+    const edad= document.getElementById('edad');
+    let errorEdad = document.getElementById('errorEdad')
+
+    if (edad.value < 18) {
+        mostrarError(errorEdad, '¡Debes ser mayor de 18 años para registrarte!')
+        validacionCorrecta = false;
+    } else{
+        ocultarError(errorEdad)
+    }
+
+
+    // Validacion de Actividad
+
+    const actividad= document.getElementById('actividad')
+    let errorActividad = document.getElementById('errorActividad')
+
+    if (actividad.value == '') {
+        mostrarError(errorActividad, 'Por favor, seleccione una actividad')
+        validacionCorrecta = false;
+    }else{
+        ocultarError(errorActividad)
+    }
+
+
+    // Validacion del nivel de estudio
+
+    const nivelEstudio= document.getElementById('nivelEstudio');
+    let errorNivelEstudio = document.getElementById('errorNivelEstudio')
+
+    if (nivelEstudio.value == ''){
+        mostrarError(errorNivelEstudio, 'Por favor, seleccione un nivel de estudio')
+        validacionCorrecta = false;
+    }else{
+        ocultarError(errorNivelEstudio)
+    }
+
+
+    //Validar terminos y condiciones 
+
+    const aceptoTerminos = document.getElementById('aceptoTerminos');
+    const errorAceptoTerminos = document.getElementById('errorAceptoTerminos')
+
+    if(!aceptoTerminos.checked) {
+        mostrarError (errorAceptoTerminos, '¡Debe aceptar los terminos y condiciones!')
+        validacionCorrecta = false;
+    } else {
+        ocultarError(errorAceptoTerminos)
+    }
+
+    return validacionCorrecta  // Esto dira si el formulario es o no valido
 }
 
 const mostrarError = (elemento, mensaje) => {
